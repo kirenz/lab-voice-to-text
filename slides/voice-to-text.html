@@ -456,29 +456,26 @@ Jan Kirenz
 <section id="ssml" class="slide level2 smaller">
 <h2>SSML</h2>
 <ul>
-<li class="fragment"><p>You may use <a href="https://docs.aws.amazon.com/polly/latest/dg/supportedtags.html">Speech Synthesis Markup Language (SSML)</a> to customize the output</p></li>
-<li class="fragment"><p>Add a <strong>break</strong>: Mary had a little lamb <break time="1s"> Whose fleece was white as snow.</break></p></li>
-<li class="fragment"><p><strong>Emphasizing</strong> words: I already told you I <emphasis level="strong">really like </emphasis> that person.</p></li>
-<li class="fragment"><p><strong>Speed</strong>: For dramatic purposes, you might wish to <prosody rate="slow">slow down the speaking rate of your text.</prosody> Or if you are in a hurry <prosody rate="fast">your may want to speed it up a bit.</prosody></p></li>
-<li class="fragment"><p><strong>Pitch</strong>: Do you like sythesized speech <prosody pitch="high">with a pitch that is higher than normal?</prosody> Or do you prefer your speech <prosody pitch="-20%">with a somewhat lower pitch?</prosody></p></li>
-<li class="fragment"><p><strong>Whisper</strong> <amazon:effect name="whispered">If you make any noise, </amazon:effect> she said, <amazon:effect name="whispered">they will hear us.</amazon:effect></p></li>
-<li class="fragment"><p><strong>Conversations</strong>: It is possible to switch between speakers within the text. Just use the following format:</p>
-<ul>
-<li class="fragment">[speaker:Brian] Hello Emma</li>
-<li class="fragment">[speaker:Emma] Hey Brian</li>
-<li class="fragment">[speaker:Brian] How are you doing?</li>
-<li class="fragment">[speaker:Emma] I am fine. May i invite you to a cup of tea?</li>
-</ul></li>
+<li class="fragment">You may use <a href="https://docs.aws.amazon.com/polly/latest/dg/supportedtags.html">Speech Synthesis Markup Language (SSML)</a> to customize the output</li>
 </ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {markdown} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>- Add a **break**: Mary had a little lamb &lt;break time="1s"/&gt; Whose fleece was white as snow.</span>
+<span id="cb3-2"><a href="#cb3-2"></a>- **Emphasizing**: I already told you I &lt;emphasis level="strong"&gt;really like &lt;/emphasis&gt; that person.</span>
+<span id="cb3-3"><a href="#cb3-3"></a>- **Speed**: For dramatic purposes, you might wish to &lt;prosody rate="slow"&gt;slow down the speaking rate of your text.&lt;/prosody&gt;</span>
+<span id="cb3-4"><a href="#cb3-4"></a>Or if you are in a hurry &lt;prosody rate="fast"&gt;your may want to speed it up a bit.&lt;/prosody&gt;</span>
+<span id="cb3-5"><a href="#cb3-5"></a>- **Pitch**: Do you like sythesized speech &lt;prosody pitch="high"&gt;with a pitch that is higher than normal?&lt;/prosody&gt; Or do you prefer your speech &lt;prosody pitch="-20%"&gt;with a somewhat lower pitch?&lt;/prosody&gt;</span>
+<span id="cb3-6"><a href="#cb3-6"></a>- **Whisper** &lt;amazon:effect name="whispered"&gt;If you make any noise, &lt;/amazon:effect&gt; she said, &lt;amazon:effect name="whispered"&gt;they will hear us.&lt;/amazon:effect&gt;</span>
+<span id="cb3-7"><a href="#cb3-7"></a>- **Conversations**: It is possible to switch between speakers within the text:</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  - [speaker:Brian] Hello Emma</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  - [speaker:Emma] Hey Brian</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="load-data" class="slide level2">
 <h2>Load data</h2>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>path_to_example <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/example.mp3'</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>path_to_example <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/example.mp3'</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>audio_file<span class="op">=</span> <span class="bu">open</span>(path_to_example, <span class="st">"rb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>audio_file<span class="op">=</span> <span class="bu">open</span>(path_to_example, <span class="st">"rb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">‘r’: Read mode. File is opened for reading.</li>
@@ -490,38 +487,42 @@ Jan Kirenz
 <h2>Transcribe</h2>
 <p>File uploads are currently limited to 25 MB and the following input file types are supported: mp3, mp4, mpeg, mpga, m4a, wav, and webm.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>transcript <span class="op">=</span> openai.Audio.transcribe(<span class="st">"whisper-1"</span>, audio_file)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>transcript</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>transcript <span class="op">=</span> openai.Audio.transcribe(<span class="st">"whisper-1"</span>, audio_file)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>transcript</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {bash} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>&lt;OpenAIObject at 0x117dea450&gt; JSON: {</span>
-<span id="cb6-2"><a href="#cb6-2"></a>  "text": "Welcome to the world of Automatic Speech Recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze."</span>
-<span id="cb6-3"><a href="#cb6-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {bash} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>&lt;OpenAIObject at 0x117dea450&gt; JSON: {</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  "text": "Welcome to the world of Automatic Speech Recognition  \</span>
+<span id="cb7-3"><a href="#cb7-3"></a>  with OpenAI's Whisper API. Whisper is an automatic speech  \</span>
+<span id="cb7-4"><a href="#cb7-4"></a>  recognition system trained on a massive amount of multilingual \</span>
+<span id="cb7-5"><a href="#cb7-5"></a>  and multitask supervised data collected from the web. It is designed \</span>
+<span id="cb7-6"><a href="#cb7-6"></a>  to convert spoken language into written text, making transcription tasks a breeze."</span>
+<span id="cb7-7"><a href="#cb7-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section id="extract-only-text" class="title-slide slide level1 center">
 <h1>Extract only text</h1>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>text_output <span class="op">=</span> transcript[<span class="st">'text'</span>]</span>
-<span id="cb7-2"><a href="#cb7-2"></a>text_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>text_output <span class="op">=</span> transcript[<span class="st">'text'</span>]</span>
+<span id="cb8-2"><a href="#cb8-2"></a>text_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">Output:</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {markdown} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>"Welcome to the world of Automatic Speech Recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze."</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {markdown} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a>"Welcome to the world of Automatic Speech Recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze."</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 
 <section id="save-text" class="title-slide slide level1 center">
 <h1>Save text</h1>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>write_to_output <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/output.txt'</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>write_to_output <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/output.txt'</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">with</span> <span class="bu">open</span>(write_to_output, <span class="st">'w'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb10-2"><a href="#cb10-2"></a>    <span class="bu">file</span>.write(text_output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="cf">with</span> <span class="bu">open</span>(write_to_output, <span class="st">'w'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="bu">file</span>.write(text_output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -544,22 +545,22 @@ Jan Kirenz
 <section id="obtain-file-names" class="slide level2">
 <h2>Obtain file names</h2>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>downloads_folder <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data'</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a></span>
-<span id="cb11-3"><a href="#cb11-3"></a>mp3_files <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> downloads_folder.iterdir() <span class="cf">if</span> f.suffix <span class="op">==</span> <span class="st">'.mp3'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>downloads_folder <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data'</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>mp3_files <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> downloads_folder.iterdir() <span class="cf">if</span> f.suffix <span class="op">==</span> <span class="st">'.mp3'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="obtain-time-of-storage" class="slide level2">
 <h2>Obtain time of storage</h2>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Get file paths along with their stored time</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>file_details <span class="op">=</span> [(f, f.stat().st_mtime) <span class="cf">for</span> f <span class="kw">in</span> mp3_files]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Get file paths along with their stored time</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>file_details <span class="op">=</span> [(f, f.stat().st_mtime) <span class="cf">for</span> f <span class="kw">in</span> mp3_files]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="sort-files-according-to-time" class="slide level2">
 <h2>Sort files according to time</h2>
 <div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>sorted_files <span class="op">=</span> <span class="bu">sorted</span>(file_details, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>sorted_files <span class="op">=</span> <span class="bu">sorted</span>(file_details, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="move-and-rename-files" class="slide level2">
@@ -569,71 +570,71 @@ Jan Kirenz
 </ul>
 <div class="fragment">
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>destination_folder <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data'</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a></span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="cf">for</span> idx, (file_path, _) <span class="kw">in</span> <span class="bu">enumerate</span>(sorted_files):</span>
-<span id="cb14-4"><a href="#cb14-4"></a>    dest_path <span class="op">=</span> destination_folder <span class="op">/</span> <span class="ss">f"</span><span class="sc">{</span><span class="bu">str</span>(idx<span class="op">+</span><span class="dv">1</span>)<span class="sc">.</span>zfill(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">_audio.mp3"</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a>    file_path.rename(dest_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>destination_folder <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data'</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="cf">for</span> idx, (file_path, _) <span class="kw">in</span> <span class="bu">enumerate</span>(sorted_files):</span>
+<span id="cb15-4"><a href="#cb15-4"></a>    dest_path <span class="op">=</span> destination_folder <span class="op">/</span> <span class="ss">f"</span><span class="sc">{</span><span class="bu">str</span>(idx<span class="op">+</span><span class="dv">1</span>)<span class="sc">.</span>zfill(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">_audio.mp3"</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>    file_path.rename(dest_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="transcripe-helper-function" class="slide level2">
 <h2>Transcripe helper function</h2>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">def</span> transcribe_audio(audio_file_path):</span>
-<span id="cb15-2"><a href="#cb15-2"></a>    <span class="co">"""</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="co">    Transcribe the given audio file using OpenAI's Whisper ASR system.</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co">    """</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a>    audio_file_path <span class="op">=</span> Path(audio_file_path)  <span class="co"># Convert to Path object if it's not already</span></span>
-<span id="cb15-6"><a href="#cb15-6"></a>    <span class="cf">with</span> audio_file_path.<span class="bu">open</span>(<span class="st">"rb"</span>) <span class="im">as</span> audio_file:</span>
-<span id="cb15-7"><a href="#cb15-7"></a>        response <span class="op">=</span> openai.Audio.transcribe(<span class="st">"whisper-1"</span>, audio_file)</span>
-<span id="cb15-8"><a href="#cb15-8"></a>    <span class="cf">return</span> response[<span class="st">"text"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">def</span> transcribe_audio(audio_file_path):</span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="co">"""</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="co">    Transcribe the given audio file using OpenAI's Whisper ASR system.</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co">    """</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>    audio_file_path <span class="op">=</span> Path(audio_file_path)  <span class="co"># Convert to Path object if it's not already</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>    <span class="cf">with</span> audio_file_path.<span class="bu">open</span>(<span class="st">"rb"</span>) <span class="im">as</span> audio_file:</span>
+<span id="cb16-7"><a href="#cb16-7"></a>        response <span class="op">=</span> openai.Audio.transcribe(<span class="st">"whisper-1"</span>, audio_file)</span>
+<span id="cb16-8"><a href="#cb16-8"></a>    <span class="cf">return</span> response[<span class="st">"text"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="apply-function" class="slide level2">
 <h2>Apply function</h2>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>data_folder <span class="op">=</span> destination_folder</span>
-<span id="cb16-2"><a href="#cb16-2"></a></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="co"># Get a list of all audio files in the /data/ folder</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>audio_files <span class="op">=</span> <span class="bu">sorted</span>(data_folder.glob(<span class="st">'*.mp3'</span>))</span>
-<span id="cb16-5"><a href="#cb16-5"></a></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="cf">for</span> audio_file <span class="kw">in</span> audio_files:</span>
-<span id="cb16-7"><a href="#cb16-7"></a>    <span class="co"># Transcribe the audio file</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a>    transcription <span class="op">=</span> transcribe_audio(audio_file)</span>
-<span id="cb16-9"><a href="#cb16-9"></a></span>
-<span id="cb16-10"><a href="#cb16-10"></a>    <span class="co"># Create a new txt file name based on the audio file's name</span></span>
-<span id="cb16-11"><a href="#cb16-11"></a>    txt_file_name <span class="op">=</span> audio_file.stem <span class="op">+</span> <span class="st">".txt"</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a>    txt_file_path <span class="op">=</span> data_folder <span class="op">/</span> txt_file_name</span>
-<span id="cb16-13"><a href="#cb16-13"></a></span>
-<span id="cb16-14"><a href="#cb16-14"></a>    <span class="co"># Save the transcription to the txt file</span></span>
-<span id="cb16-15"><a href="#cb16-15"></a>    <span class="cf">with</span> txt_file_path.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> txt_file:</span>
-<span id="cb16-16"><a href="#cb16-16"></a>        txt_file.write(transcription)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>data_folder <span class="op">=</span> destination_folder</span>
+<span id="cb17-2"><a href="#cb17-2"></a></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co"># Get a list of all audio files in the /data/ folder</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>audio_files <span class="op">=</span> <span class="bu">sorted</span>(data_folder.glob(<span class="st">'*.mp3'</span>))</span>
+<span id="cb17-5"><a href="#cb17-5"></a></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="cf">for</span> audio_file <span class="kw">in</span> audio_files:</span>
+<span id="cb17-7"><a href="#cb17-7"></a>    <span class="co"># Transcribe the audio file</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>    transcription <span class="op">=</span> transcribe_audio(audio_file)</span>
+<span id="cb17-9"><a href="#cb17-9"></a></span>
+<span id="cb17-10"><a href="#cb17-10"></a>    <span class="co"># Create a new txt file name based on the audio file's name</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a>    txt_file_name <span class="op">=</span> audio_file.stem <span class="op">+</span> <span class="st">".txt"</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a>    txt_file_path <span class="op">=</span> data_folder <span class="op">/</span> txt_file_name</span>
+<span id="cb17-13"><a href="#cb17-13"></a></span>
+<span id="cb17-14"><a href="#cb17-14"></a>    <span class="co"># Save the transcription to the txt file</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a>    <span class="cf">with</span> txt_file_path.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> txt_file:</span>
+<span id="cb17-16"><a href="#cb17-16"></a>        txt_file.write(transcription)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="save-as-markdown" class="slide level2">
 <h2>Save as markdown</h2>
 <div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>markdown_content <span class="op">=</span> []</span>
-<span id="cb17-2"><a href="#cb17-2"></a></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="co"># Iterate through all txt files in the /data/ folder</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a>txt_files <span class="op">=</span> <span class="bu">sorted</span>(data_folder.glob(<span class="st">'*.txt'</span>))</span>
-<span id="cb17-5"><a href="#cb17-5"></a></span>
-<span id="cb17-6"><a href="#cb17-6"></a><span class="cf">for</span> txt_file <span class="kw">in</span> txt_files:</span>
-<span id="cb17-7"><a href="#cb17-7"></a>    <span class="co"># Read the content of the txt file</span></span>
-<span id="cb17-8"><a href="#cb17-8"></a>    <span class="cf">with</span> txt_file.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb17-9"><a href="#cb17-9"></a>        file_content <span class="op">=</span> <span class="bu">file</span>.read()</span>
-<span id="cb17-10"><a href="#cb17-10"></a>    </span>
-<span id="cb17-11"><a href="#cb17-11"></a>    <span class="co"># Append the file name as a headline and then the content to the markdown content list</span></span>
-<span id="cb17-12"><a href="#cb17-12"></a>    markdown_content.append(<span class="ss">f"# </span><span class="sc">{</span>txt_file<span class="sc">.</span>name<span class="sc">}</span><span class="ch">\n\n</span><span class="sc">{</span>file_content<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb17-13"><a href="#cb17-13"></a></span>
-<span id="cb17-14"><a href="#cb17-14"></a><span class="co"># Join all the markdown content pieces to create the final document</span></span>
-<span id="cb17-15"><a href="#cb17-15"></a>final_markdown <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(markdown_content)</span>
-<span id="cb17-16"><a href="#cb17-16"></a></span>
-<span id="cb17-17"><a href="#cb17-17"></a><span class="co"># Save the combined content to a markdown file</span></span>
-<span id="cb17-18"><a href="#cb17-18"></a>output_file <span class="op">=</span> data_folder <span class="op">/</span> <span class="st">"combined_audio_transcriptions.md"</span></span>
-<span id="cb17-19"><a href="#cb17-19"></a><span class="cf">with</span> output_file.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb17-20"><a href="#cb17-20"></a>    <span class="bu">file</span>.write(final_markdown)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>markdown_content <span class="op">=</span> []</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># Iterate through all txt files in the /data/ folder</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>txt_files <span class="op">=</span> <span class="bu">sorted</span>(data_folder.glob(<span class="st">'*.txt'</span>))</span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="cf">for</span> txt_file <span class="kw">in</span> txt_files:</span>
+<span id="cb18-7"><a href="#cb18-7"></a>    <span class="co"># Read the content of the txt file</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>    <span class="cf">with</span> txt_file.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb18-9"><a href="#cb18-9"></a>        file_content <span class="op">=</span> <span class="bu">file</span>.read()</span>
+<span id="cb18-10"><a href="#cb18-10"></a>    </span>
+<span id="cb18-11"><a href="#cb18-11"></a>    <span class="co"># Append the file name as a headline and then the content to the markdown content list</span></span>
+<span id="cb18-12"><a href="#cb18-12"></a>    markdown_content.append(<span class="ss">f"# </span><span class="sc">{</span>txt_file<span class="sc">.</span>name<span class="sc">}</span><span class="ch">\n\n</span><span class="sc">{</span>file_content<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb18-13"><a href="#cb18-13"></a></span>
+<span id="cb18-14"><a href="#cb18-14"></a><span class="co"># Join all the markdown content pieces to create the final document</span></span>
+<span id="cb18-15"><a href="#cb18-15"></a>final_markdown <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(markdown_content)</span>
+<span id="cb18-16"><a href="#cb18-16"></a></span>
+<span id="cb18-17"><a href="#cb18-17"></a><span class="co"># Save the combined content to a markdown file</span></span>
+<span id="cb18-18"><a href="#cb18-18"></a>output_file <span class="op">=</span> data_folder <span class="op">/</span> <span class="st">"combined_audio_transcriptions.md"</span></span>
+<span id="cb18-19"><a href="#cb18-19"></a><span class="cf">with</span> output_file.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb18-20"><a href="#cb18-20"></a>    <span class="bu">file</span>.write(final_markdown)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -644,112 +645,115 @@ Jan Kirenz
 <section id="system-prompt" class="slide level2">
 <h2>System prompt</h2>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>system_prompt <span class="op">=</span> <span class="st">"You are a helpful assistant. Your task is to correct any spelling discrepancies in the transcribed text. Only add necessary punctuation such as periods, commas, and capitalization, and use only the context provided"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>system_prompt <span class="op">=</span> <span class="st">"You are a helpful assistant. </span><span class="ch">\</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="st">    Your task is to correct any spelling discrepancies in the </span><span class="ch">\</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="st">    transcribed text. Only add necessary punctuation such as </span><span class="ch">\</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="st">    periods, commas, and capitalization, and use only the context provided"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="helper-function" class="slide level2">
 <h2>Helper function</h2>
 <div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">def</span> generate_corrected_transcript(temperature, system_prompt, transcribed_text):</span>
-<span id="cb19-2"><a href="#cb19-2"></a>    response <span class="op">=</span> openai.ChatCompletion.create(</span>
-<span id="cb19-3"><a href="#cb19-3"></a>        model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>,</span>
-<span id="cb19-4"><a href="#cb19-4"></a>        temperature<span class="op">=</span>temperature,</span>
-<span id="cb19-5"><a href="#cb19-5"></a>        messages<span class="op">=</span>[</span>
-<span id="cb19-6"><a href="#cb19-6"></a>            {</span>
-<span id="cb19-7"><a href="#cb19-7"></a>                <span class="st">"role"</span>: <span class="st">"system"</span>,</span>
-<span id="cb19-8"><a href="#cb19-8"></a>                <span class="st">"content"</span>: system_prompt</span>
-<span id="cb19-9"><a href="#cb19-9"></a>            },</span>
-<span id="cb19-10"><a href="#cb19-10"></a>            {</span>
-<span id="cb19-11"><a href="#cb19-11"></a>                <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
-<span id="cb19-12"><a href="#cb19-12"></a>                <span class="st">"content"</span>: transcribed_text</span>
-<span id="cb19-13"><a href="#cb19-13"></a>            }</span>
-<span id="cb19-14"><a href="#cb19-14"></a>        ]</span>
-<span id="cb19-15"><a href="#cb19-15"></a>    )</span>
-<span id="cb19-16"><a href="#cb19-16"></a>    <span class="cf">return</span> response[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'message'</span>][<span class="st">'content'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">def</span> generate_corrected_transcript(temperature, system_prompt, transcribed_text):</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    response <span class="op">=</span> openai.ChatCompletion.create(</span>
+<span id="cb20-3"><a href="#cb20-3"></a>        model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>,</span>
+<span id="cb20-4"><a href="#cb20-4"></a>        temperature<span class="op">=</span>temperature,</span>
+<span id="cb20-5"><a href="#cb20-5"></a>        messages<span class="op">=</span>[</span>
+<span id="cb20-6"><a href="#cb20-6"></a>            {</span>
+<span id="cb20-7"><a href="#cb20-7"></a>                <span class="st">"role"</span>: <span class="st">"system"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8"></a>                <span class="st">"content"</span>: system_prompt</span>
+<span id="cb20-9"><a href="#cb20-9"></a>            },</span>
+<span id="cb20-10"><a href="#cb20-10"></a>            {</span>
+<span id="cb20-11"><a href="#cb20-11"></a>                <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12"></a>                <span class="st">"content"</span>: transcribed_text</span>
+<span id="cb20-13"><a href="#cb20-13"></a>            }</span>
+<span id="cb20-14"><a href="#cb20-14"></a>        ]</span>
+<span id="cb20-15"><a href="#cb20-15"></a>    )</span>
+<span id="cb20-16"><a href="#cb20-16"></a>    <span class="cf">return</span> response[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'message'</span>][<span class="st">'content'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="correct-data-for-multiple-files" class="slide level2">
+<section id="correct-data-for-multiple-files" class="slide level2 smaller">
 <h2>Correct data for multiple files</h2>
 <ul>
 <li class="fragment">In the appendix is an example of how to correct a single file</li>
 </ul>
 <div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Directory containing the transcription files</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>data_folder <span class="op">=</span> destination_folder</span>
-<span id="cb20-3"><a href="#cb20-3"></a></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="co"># List to hold the corrected transcriptions</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a>corrected_transcriptions <span class="op">=</span> []</span>
-<span id="cb20-6"><a href="#cb20-6"></a></span>
-<span id="cb20-7"><a href="#cb20-7"></a><span class="co"># Iterate through each individual .txt file</span></span>
-<span id="cb20-8"><a href="#cb20-8"></a><span class="cf">for</span> txt_file_path <span class="kw">in</span> <span class="bu">sorted</span>(data_folder.glob(<span class="st">'??_audio.txt'</span>)):</span>
-<span id="cb20-9"><a href="#cb20-9"></a>    <span class="co"># Read the transcription from the file</span></span>
-<span id="cb20-10"><a href="#cb20-10"></a>    <span class="cf">with</span> txt_file_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> txt_file:</span>
-<span id="cb20-11"><a href="#cb20-11"></a>        transcription <span class="op">=</span> txt_file.read()</span>
-<span id="cb20-12"><a href="#cb20-12"></a></span>
-<span id="cb20-13"><a href="#cb20-13"></a>    <span class="co"># Post-process the transcription using GPT-4</span></span>
-<span id="cb20-14"><a href="#cb20-14"></a>    corrected_text <span class="op">=</span> generate_corrected_transcript(<span class="fl">0.5</span>, system_prompt, transcription)</span>
-<span id="cb20-15"><a href="#cb20-15"></a>    </span>
-<span id="cb20-16"><a href="#cb20-16"></a>    <span class="co"># Append the file name as a headline and then the corrected content to the list</span></span>
-<span id="cb20-17"><a href="#cb20-17"></a>    corrected_transcriptions.append(<span class="ss">f"# </span><span class="sc">{</span>txt_file_path<span class="sc">.</span>name<span class="sc">}</span><span class="ch">\n\n</span><span class="sc">{</span>corrected_text<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb20-18"><a href="#cb20-18"></a></span>
-<span id="cb20-19"><a href="#cb20-19"></a><span class="co"># Combine the corrected transcriptions and save them to the new markdown file</span></span>
-<span id="cb20-20"><a href="#cb20-20"></a>output_file <span class="op">=</span> data_folder <span class="op">/</span> <span class="st">"corrected_text.md"</span></span>
-<span id="cb20-21"><a href="#cb20-21"></a><span class="cf">with</span> output_file.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> out_file:</span>
-<span id="cb20-22"><a href="#cb20-22"></a>    out_file.write(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(corrected_transcriptions))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Directory containing the transcription files</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>data_folder <span class="op">=</span> destination_folder</span>
+<span id="cb21-3"><a href="#cb21-3"></a></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="co"># List to hold the corrected transcriptions</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>corrected_transcriptions <span class="op">=</span> []</span>
+<span id="cb21-6"><a href="#cb21-6"></a></span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="co"># Iterate through each individual .txt file</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="cf">for</span> txt_file_path <span class="kw">in</span> <span class="bu">sorted</span>(data_folder.glob(<span class="st">'??_audio.txt'</span>)):</span>
+<span id="cb21-9"><a href="#cb21-9"></a>    <span class="co"># Read the transcription from the file</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a>    <span class="cf">with</span> txt_file_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> txt_file:</span>
+<span id="cb21-11"><a href="#cb21-11"></a>        transcription <span class="op">=</span> txt_file.read()</span>
+<span id="cb21-12"><a href="#cb21-12"></a></span>
+<span id="cb21-13"><a href="#cb21-13"></a>    <span class="co"># Post-process the transcription using GPT-4</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a>    corrected_text <span class="op">=</span> generate_corrected_transcript(<span class="fl">0.5</span>, system_prompt, transcription)</span>
+<span id="cb21-15"><a href="#cb21-15"></a>    </span>
+<span id="cb21-16"><a href="#cb21-16"></a>    <span class="co"># Append the file name as a headline and then the corrected content to the list</span></span>
+<span id="cb21-17"><a href="#cb21-17"></a>    corrected_transcriptions.append(<span class="ss">f"# </span><span class="sc">{</span>txt_file_path<span class="sc">.</span>name<span class="sc">}</span><span class="ch">\n\n</span><span class="sc">{</span>corrected_text<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb21-18"><a href="#cb21-18"></a></span>
+<span id="cb21-19"><a href="#cb21-19"></a><span class="co"># Combine the corrected transcriptions and save them to the new markdown file</span></span>
+<span id="cb21-20"><a href="#cb21-20"></a>output_file <span class="op">=</span> data_folder <span class="op">/</span> <span class="st">"corrected_text.md"</span></span>
+<span id="cb21-21"><a href="#cb21-21"></a><span class="cf">with</span> output_file.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> out_file:</span>
+<span id="cb21-22"><a href="#cb21-22"></a>    out_file.write(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(corrected_transcriptions))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="show-differences" class="slide level2">
+<section id="show-differences" class="slide level2 smaller">
 <h2>Show differences</h2>
 <div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Define file paths</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>original_file_path <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data/combined_audio_transcriptions.md'</span> </span>
-<span id="cb21-3"><a href="#cb21-3"></a></span>
-<span id="cb21-4"><a href="#cb21-4"></a>corrected_file_path <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data/corrected_text.md'</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a></span>
-<span id="cb21-6"><a href="#cb21-6"></a><span class="co"># Read the content of both markdown files</span></span>
-<span id="cb21-7"><a href="#cb21-7"></a><span class="cf">with</span> original_file_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> f:</span>
-<span id="cb21-8"><a href="#cb21-8"></a>    original_content <span class="op">=</span> f.readlines()</span>
-<span id="cb21-9"><a href="#cb21-9"></a></span>
-<span id="cb21-10"><a href="#cb21-10"></a><span class="cf">with</span> corrected_file_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> f:</span>
-<span id="cb21-11"><a href="#cb21-11"></a>    corrected_content <span class="op">=</span> f.readlines()</span>
-<span id="cb21-12"><a href="#cb21-12"></a></span>
-<span id="cb21-13"><a href="#cb21-13"></a><span class="co"># Generate a side-by-side comparison in HTML format</span></span>
-<span id="cb21-14"><a href="#cb21-14"></a>differ <span class="op">=</span> difflib.HtmlDiff()</span>
-<span id="cb21-15"><a href="#cb21-15"></a>comparison_html <span class="op">=</span> differ.make_file(original_content, corrected_content)</span>
-<span id="cb21-16"><a href="#cb21-16"></a></span>
-<span id="cb21-17"><a href="#cb21-17"></a><span class="co"># Add custom CSS for content wrapping and better visualization</span></span>
-<span id="cb21-18"><a href="#cb21-18"></a>custom_css <span class="op">=</span> <span class="st">"""</span></span>
-<span id="cb21-19"><a href="#cb21-19"></a><span class="st">&lt;style&gt;</span></span>
-<span id="cb21-20"><a href="#cb21-20"></a><span class="st">    body {</span></span>
-<span id="cb21-21"><a href="#cb21-21"></a><span class="st">        font-family: Arial, sans-serif;</span></span>
-<span id="cb21-22"><a href="#cb21-22"></a><span class="st">        margin: 20px;</span></span>
-<span id="cb21-23"><a href="#cb21-23"></a><span class="st">    }</span></span>
-<span id="cb21-24"><a href="#cb21-24"></a><span class="st">    table.diff {</span></span>
-<span id="cb21-25"><a href="#cb21-25"></a><span class="st">        width: 100%;</span></span>
-<span id="cb21-26"><a href="#cb21-26"></a><span class="st">        border-collapse: collapse;</span></span>
-<span id="cb21-27"><a href="#cb21-27"></a><span class="st">    }</span></span>
-<span id="cb21-28"><a href="#cb21-28"></a><span class="st">    td {</span></span>
-<span id="cb21-29"><a href="#cb21-29"></a><span class="st">        vertical-align: top;</span></span>
-<span id="cb21-30"><a href="#cb21-30"></a><span class="st">        padding: 5px;</span></span>
-<span id="cb21-31"><a href="#cb21-31"></a><span class="st">        border: 1px solid #ddd;</span></span>
-<span id="cb21-32"><a href="#cb21-32"></a><span class="st">        white-space: pre-wrap;</span></span>
-<span id="cb21-33"><a href="#cb21-33"></a><span class="st">        word-break: break-word;</span></span>
-<span id="cb21-34"><a href="#cb21-34"></a><span class="st">        overflow-wrap: break-word;</span></span>
-<span id="cb21-35"><a href="#cb21-35"></a><span class="st">    }</span></span>
-<span id="cb21-36"><a href="#cb21-36"></a><span class="st">&lt;/style&gt;</span></span>
-<span id="cb21-37"><a href="#cb21-37"></a><span class="st">"""</span></span>
-<span id="cb21-38"><a href="#cb21-38"></a></span>
-<span id="cb21-39"><a href="#cb21-39"></a><span class="co"># The rest of your code remains the same...</span></span>
-<span id="cb21-40"><a href="#cb21-40"></a></span>
-<span id="cb21-41"><a href="#cb21-41"></a></span>
-<span id="cb21-42"><a href="#cb21-42"></a><span class="co"># Insert the custom CSS into the generated HTML content</span></span>
-<span id="cb21-43"><a href="#cb21-43"></a>comparison_html <span class="op">=</span> comparison_html.replace(<span class="st">'&lt;head&gt;'</span>, <span class="st">'&lt;head&gt;'</span> <span class="op">+</span> custom_css)</span>
-<span id="cb21-44"><a href="#cb21-44"></a></span>
-<span id="cb21-45"><a href="#cb21-45"></a></span>
-<span id="cb21-46"><a href="#cb21-46"></a><span class="co"># Save the HTML comparison to a file</span></span>
-<span id="cb21-47"><a href="#cb21-47"></a>output_html_path <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data/comparison.html'</span></span>
-<span id="cb21-48"><a href="#cb21-48"></a><span class="cf">with</span> output_html_path.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> f:</span>
-<span id="cb21-49"><a href="#cb21-49"></a>    f.write(comparison_html)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Define file paths</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>original_file_path <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data/combined_audio_transcriptions.md'</span> </span>
+<span id="cb22-3"><a href="#cb22-3"></a></span>
+<span id="cb22-4"><a href="#cb22-4"></a>corrected_file_path <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data/corrected_text.md'</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co"># Read the content of both markdown files</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="cf">with</span> original_file_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb22-8"><a href="#cb22-8"></a>    original_content <span class="op">=</span> f.readlines()</span>
+<span id="cb22-9"><a href="#cb22-9"></a></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="cf">with</span> corrected_file_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb22-11"><a href="#cb22-11"></a>    corrected_content <span class="op">=</span> f.readlines()</span>
+<span id="cb22-12"><a href="#cb22-12"></a></span>
+<span id="cb22-13"><a href="#cb22-13"></a><span class="co"># Generate a side-by-side comparison in HTML format</span></span>
+<span id="cb22-14"><a href="#cb22-14"></a>differ <span class="op">=</span> difflib.HtmlDiff()</span>
+<span id="cb22-15"><a href="#cb22-15"></a>comparison_html <span class="op">=</span> differ.make_file(original_content, corrected_content)</span>
+<span id="cb22-16"><a href="#cb22-16"></a></span>
+<span id="cb22-17"><a href="#cb22-17"></a><span class="co"># Add custom CSS for content wrapping and better visualization</span></span>
+<span id="cb22-18"><a href="#cb22-18"></a>custom_css <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb22-19"><a href="#cb22-19"></a><span class="st">&lt;style&gt;</span></span>
+<span id="cb22-20"><a href="#cb22-20"></a><span class="st">    body {</span></span>
+<span id="cb22-21"><a href="#cb22-21"></a><span class="st">        font-family: Arial, sans-serif;</span></span>
+<span id="cb22-22"><a href="#cb22-22"></a><span class="st">        margin: 20px;</span></span>
+<span id="cb22-23"><a href="#cb22-23"></a><span class="st">    }</span></span>
+<span id="cb22-24"><a href="#cb22-24"></a><span class="st">    table.diff {</span></span>
+<span id="cb22-25"><a href="#cb22-25"></a><span class="st">        width: 100%;</span></span>
+<span id="cb22-26"><a href="#cb22-26"></a><span class="st">        border-collapse: collapse;</span></span>
+<span id="cb22-27"><a href="#cb22-27"></a><span class="st">    }</span></span>
+<span id="cb22-28"><a href="#cb22-28"></a><span class="st">    td {</span></span>
+<span id="cb22-29"><a href="#cb22-29"></a><span class="st">        vertical-align: top;</span></span>
+<span id="cb22-30"><a href="#cb22-30"></a><span class="st">        padding: 5px;</span></span>
+<span id="cb22-31"><a href="#cb22-31"></a><span class="st">        border: 1px solid #ddd;</span></span>
+<span id="cb22-32"><a href="#cb22-32"></a><span class="st">        white-space: pre-wrap;</span></span>
+<span id="cb22-33"><a href="#cb22-33"></a><span class="st">        word-break: break-word;</span></span>
+<span id="cb22-34"><a href="#cb22-34"></a><span class="st">        overflow-wrap: break-word;</span></span>
+<span id="cb22-35"><a href="#cb22-35"></a><span class="st">    }</span></span>
+<span id="cb22-36"><a href="#cb22-36"></a><span class="st">&lt;/style&gt;</span></span>
+<span id="cb22-37"><a href="#cb22-37"></a><span class="st">"""</span></span>
+<span id="cb22-38"><a href="#cb22-38"></a></span>
+<span id="cb22-39"><a href="#cb22-39"></a><span class="co"># The rest of your code remains the same...</span></span>
+<span id="cb22-40"><a href="#cb22-40"></a></span>
+<span id="cb22-41"><a href="#cb22-41"></a></span>
+<span id="cb22-42"><a href="#cb22-42"></a><span class="co"># Insert the custom CSS into the generated HTML content</span></span>
+<span id="cb22-43"><a href="#cb22-43"></a>comparison_html <span class="op">=</span> comparison_html.replace(<span class="st">'&lt;head&gt;'</span>, <span class="st">'&lt;head&gt;'</span> <span class="op">+</span> custom_css)</span>
+<span id="cb22-44"><a href="#cb22-44"></a></span>
+<span id="cb22-45"><a href="#cb22-45"></a></span>
+<span id="cb22-46"><a href="#cb22-46"></a><span class="co"># Save the HTML comparison to a file</span></span>
+<span id="cb22-47"><a href="#cb22-47"></a>output_html_path <span class="op">=</span> Path.home() <span class="op">/</span> <span class="st">'Downloads/data/comparison.html'</span></span>
+<span id="cb22-48"><a href="#cb22-48"></a><span class="cf">with</span> output_html_path.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb22-49"><a href="#cb22-49"></a>    f.write(comparison_html)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section id="whats-next" class="title-slide slide level1 center" data-background-image="../images/logo.png" data-background-opacity="0.5">
@@ -766,18 +770,18 @@ Jan Kirenz
 <section id="correct-data-for-a-single-file" class="slide level2">
 <h2>Correct data for a single file</h2>
 <div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Read the transcriptions from the markdown file</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>markdown_path <span class="op">=</span> Path(<span class="st">'YOUR/PATH/DATA.md'</span>)</span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="cf">with</span> markdown_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> md_file:</span>
-<span id="cb22-4"><a href="#cb22-4"></a>    transcriptions <span class="op">=</span> md_file.read()</span>
-<span id="cb22-5"><a href="#cb22-5"></a></span>
-<span id="cb22-6"><a href="#cb22-6"></a><span class="co"># Post-process the transcriptions using GPT-4</span></span>
-<span id="cb22-7"><a href="#cb22-7"></a>corrected_text <span class="op">=</span> generate_corrected_transcript(<span class="fl">0.2</span>, system_prompt, transcriptions)</span>
-<span id="cb22-8"><a href="#cb22-8"></a></span>
-<span id="cb22-9"><a href="#cb22-9"></a><span class="co"># save the corrected text to a new markdown file</span></span>
-<span id="cb22-10"><a href="#cb22-10"></a>output_path <span class="op">=</span> Path(<span class="st">'YOUR/PATH/corrected_data.md'</span>)</span>
-<span id="cb22-11"><a href="#cb22-11"></a><span class="cf">with</span> output_path.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> out_file:</span>
-<span id="cb22-12"><a href="#cb22-12"></a>    out_file.write(corrected_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Read the transcriptions from the markdown file</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>markdown_path <span class="op">=</span> Path(<span class="st">'YOUR/PATH/DATA.md'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="cf">with</span> markdown_path.<span class="bu">open</span>(<span class="st">'r'</span>) <span class="im">as</span> md_file:</span>
+<span id="cb23-4"><a href="#cb23-4"></a>    transcriptions <span class="op">=</span> md_file.read()</span>
+<span id="cb23-5"><a href="#cb23-5"></a></span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="co"># Post-process the transcriptions using GPT-4</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>corrected_text <span class="op">=</span> generate_corrected_transcript(<span class="fl">0.2</span>, system_prompt, transcriptions)</span>
+<span id="cb23-8"><a href="#cb23-8"></a></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="co"># save the corrected text to a new markdown file</span></span>
+<span id="cb23-10"><a href="#cb23-10"></a>output_path <span class="op">=</span> Path(<span class="st">'YOUR/PATH/corrected_data.md'</span>)</span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="cf">with</span> output_path.<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> out_file:</span>
+<span id="cb23-12"><a href="#cb23-12"></a>    out_file.write(corrected_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <div class="footer footer-default">
