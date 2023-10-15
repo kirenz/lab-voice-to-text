@@ -1,0 +1,121 @@
+[
+  {
+    "objectID": "slides/voice-to-text.html#create-mp3-data",
+    "href": "slides/voice-to-text.html#create-mp3-data",
+    "title": "Speech to Text",
+    "section": "Create mp3 data",
+    "text": "Create mp3 data\n\nUse ttsmp3 to generate your audio data\nsave it as example.mp3 in your Downloads folder\nExample text to use in ttsmp3 :\n\nWelcome to the world of automatic speech recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze."
+  },
+  {
+    "objectID": "slides/voice-to-text.html#ssml",
+    "href": "slides/voice-to-text.html#ssml",
+    "title": "Speech to Text",
+    "section": "SSML",
+    "text": "SSML\n\nYou may use Speech Synthesis Markup Language (SSML) to customize the output\nAdd a break: Mary had a little lamb  Whose fleece was white as snow.\nEmphasizing words: I already told you I really like  that person.\nSpeed: For dramatic purposes, you might wish to slow down the speaking rate of your text. Or if you are in a hurry your may want to speed it up a bit.\nPitch: Do you like sythesized speech with a pitch that is higher than normal? Or do you prefer your speech with a somewhat lower pitch?\nWhisper If you make any noise,  she said, they will hear us.\nConversations: It is possible to switch between speakers within the text. Just use the following format:\n\n[speaker:Brian] Hello Emma\n[speaker:Emma] Hey Brian\n[speaker:Brian] How are you doing?\n[speaker:Emma] I am fine. May i invite you to a cup of tea?"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#load-data",
+    "href": "slides/voice-to-text.html#load-data",
+    "title": "Speech to Text",
+    "section": "Load data",
+    "text": "Load data\n\npath_to_example = Path.home() / 'Downloads/example.mp3' \n\n\n\naudio_file= open(path_to_example, \"rb\")\n\n\n‘r’: Read mode. File is opened for reading.\n‘b’: Binary mode. File is opened in binary mode, which is used for non-text files (e.g., image and sound files)."
+  },
+  {
+    "objectID": "slides/voice-to-text.html#transcribe",
+    "href": "slides/voice-to-text.html#transcribe",
+    "title": "Speech to Text",
+    "section": "Transcribe",
+    "text": "Transcribe\nFile uploads are currently limited to 25 MB and the following input file types are supported: mp3, mp4, mpeg, mpga, m4a, wav, and webm.\n\ntranscript = openai.Audio.transcribe(\"whisper-1\", audio_file)\ntranscript\n\n\n&lt;OpenAIObject at 0x117dea450&gt; JSON: {\n  \"text\": \"Welcome to the world of Automatic Speech Recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze.\"\n}"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#prepare-environment",
+    "href": "slides/voice-to-text.html#prepare-environment",
+    "title": "Speech to Text",
+    "section": "Prepare environment",
+    "text": "Prepare environment\n\nCreate a new folder called data in your Downloads folder\nPlace at least two mp3 files in your data folder"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#obtain-file-names",
+    "href": "slides/voice-to-text.html#obtain-file-names",
+    "title": "Speech to Text",
+    "section": "Obtain file names",
+    "text": "Obtain file names\n\ndownloads_folder = Path.home() / 'Downloads/data'\n\nmp3_files = [f for f in downloads_folder.iterdir() if f.suffix == '.mp3']"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#obtain-time-of-storage",
+    "href": "slides/voice-to-text.html#obtain-time-of-storage",
+    "title": "Speech to Text",
+    "section": "Obtain time of storage",
+    "text": "Obtain time of storage\n\n# Get file paths along with their stored time\nfile_details = [(f, f.stat().st_mtime) for f in mp3_files]"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#sort-files-according-to-time",
+    "href": "slides/voice-to-text.html#sort-files-according-to-time",
+    "title": "Speech to Text",
+    "section": "Sort files according to time",
+    "text": "Sort files according to time\n\nsorted_files = sorted(file_details, key=lambda x: x[1])"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#move-and-rename-files",
+    "href": "slides/voice-to-text.html#move-and-rename-files",
+    "title": "Speech to Text",
+    "section": "Move and rename files",
+    "text": "Move and rename files\n\nMove the files to a folder of your choice (we use our data folder) and rename the files to 01_audio, 02_audio, etc.\n\n\n\ndestination_folder = Path.home() / 'Downloads/data'\n\nfor idx, (file_path, _) in enumerate(sorted_files):\n    dest_path = destination_folder / f\"{str(idx+1).zfill(2)}_audio.mp3\"\n    file_path.rename(dest_path)"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#transcripe-helper-function",
+    "href": "slides/voice-to-text.html#transcripe-helper-function",
+    "title": "Speech to Text",
+    "section": "Transcripe helper function",
+    "text": "Transcripe helper function\n\ndef transcribe_audio(audio_file_path):\n    \"\"\"\n    Transcribe the given audio file using OpenAI's Whisper ASR system.\n    \"\"\"\n    audio_file_path = Path(audio_file_path)  # Convert to Path object if it's not already\n    with audio_file_path.open(\"rb\") as audio_file:\n        response = openai.Audio.transcribe(\"whisper-1\", audio_file)\n    return response[\"text\"]"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#apply-function",
+    "href": "slides/voice-to-text.html#apply-function",
+    "title": "Speech to Text",
+    "section": "Apply function",
+    "text": "Apply function\n\ndata_folder = destination_folder\n\n# Get a list of all audio files in the /data/ folder\naudio_files = sorted(data_folder.glob('*.mp3'))\n\nfor audio_file in audio_files:\n    # Transcribe the audio file\n    transcription = transcribe_audio(audio_file)\n\n    # Create a new txt file name based on the audio file's name\n    txt_file_name = audio_file.stem + \".txt\"\n    txt_file_path = data_folder / txt_file_name\n\n    # Save the transcription to the txt file\n    with txt_file_path.open('w') as txt_file:\n        txt_file.write(transcription)"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#save-as-markdown",
+    "href": "slides/voice-to-text.html#save-as-markdown",
+    "title": "Speech to Text",
+    "section": "Save as markdown",
+    "text": "Save as markdown\n\nmarkdown_content = []\n\n# Iterate through all txt files in the /data/ folder\ntxt_files = sorted(data_folder.glob('*.txt'))\n\nfor txt_file in txt_files:\n    # Read the content of the txt file\n    with txt_file.open('r') as file:\n        file_content = file.read()\n    \n    # Append the file name as a headline and then the content to the markdown content list\n    markdown_content.append(f\"# {txt_file.name}\\n\\n{file_content}\\n\")\n\n# Join all the markdown content pieces to create the final document\nfinal_markdown = \"\\n\".join(markdown_content)\n\n# Save the combined content to a markdown file\noutput_file = data_folder / \"combined_audio_transcriptions.md\"\nwith output_file.open('w') as file:\n    file.write(final_markdown)"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#system-prompt",
+    "href": "slides/voice-to-text.html#system-prompt",
+    "title": "Speech to Text",
+    "section": "System prompt",
+    "text": "System prompt\n\nsystem_prompt = \"You are a helpful assistant. Your task is to correct any spelling discrepancies in the transcribed text. Only add necessary punctuation such as periods, commas, and capitalization, and use only the context provided\""
+  },
+  {
+    "objectID": "slides/voice-to-text.html#helper-function",
+    "href": "slides/voice-to-text.html#helper-function",
+    "title": "Speech to Text",
+    "section": "Helper function",
+    "text": "Helper function\n\ndef generate_corrected_transcript(temperature, system_prompt, transcribed_text):\n    response = openai.ChatCompletion.create(\n        model=\"gpt-3.5-turbo\",\n        temperature=temperature,\n        messages=[\n            {\n                \"role\": \"system\",\n                \"content\": system_prompt\n            },\n            {\n                \"role\": \"user\",\n                \"content\": transcribed_text\n            }\n        ]\n    )\n    return response['choices'][0]['message']['content']"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#correct-data-for-multiple-files",
+    "href": "slides/voice-to-text.html#correct-data-for-multiple-files",
+    "title": "Speech to Text",
+    "section": "Correct data for multiple files",
+    "text": "Correct data for multiple files\n\nIn the appendix is an example of how to correct a single file\n\n\n# Directory containing the transcription files\ndata_folder = destination_folder\n\n# List to hold the corrected transcriptions\ncorrected_transcriptions = []\n\n# Iterate through each individual .txt file\nfor txt_file_path in sorted(data_folder.glob('??_audio.txt')):\n    # Read the transcription from the file\n    with txt_file_path.open('r') as txt_file:\n        transcription = txt_file.read()\n\n    # Post-process the transcription using GPT-4\n    corrected_text = generate_corrected_transcript(0.5, system_prompt, transcription)\n    \n    # Append the file name as a headline and then the corrected content to the list\n    corrected_transcriptions.append(f\"# {txt_file_path.name}\\n\\n{corrected_text}\\n\")\n\n# Combine the corrected transcriptions and save them to the new markdown file\noutput_file = data_folder / \"corrected_text.md\"\nwith output_file.open('w') as out_file:\n    out_file.write(\"\\n\".join(corrected_transcriptions))"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#show-differences",
+    "href": "slides/voice-to-text.html#show-differences",
+    "title": "Speech to Text",
+    "section": "Show differences",
+    "text": "Show differences\n\n# Define file paths\noriginal_file_path = Path.home() / 'Downloads/data/combined_audio_transcriptions.md' \n\ncorrected_file_path = Path.home() / 'Downloads/data/corrected_text.md'\n\n# Read the content of both markdown files\nwith original_file_path.open('r') as f:\n    original_content = f.readlines()\n\nwith corrected_file_path.open('r') as f:\n    corrected_content = f.readlines()\n\n# Generate a side-by-side comparison in HTML format\ndiffer = difflib.HtmlDiff()\ncomparison_html = differ.make_file(original_content, corrected_content)\n\n# Add custom CSS for content wrapping and better visualization\ncustom_css = \"\"\"\n&lt;style&gt;\n    body {\n        font-family: Arial, sans-serif;\n        margin: 20px;\n    }\n    table.diff {\n        width: 100%;\n        border-collapse: collapse;\n    }\n    td {\n        vertical-align: top;\n        padding: 5px;\n        border: 1px solid #ddd;\n        white-space: pre-wrap;\n        word-break: break-word;\n        overflow-wrap: break-word;\n    }\n&lt;/style&gt;\n\"\"\"\n\n# The rest of your code remains the same...\n\n\n# Insert the custom CSS into the generated HTML content\ncomparison_html = comparison_html.replace('&lt;head&gt;', '&lt;head&gt;' + custom_css)\n\n\n# Save the HTML comparison to a file\noutput_html_path = Path.home() / 'Downloads/data/comparison.html'\nwith output_html_path.open('w') as f:\n    f.write(comparison_html)"
+  },
+  {
+    "objectID": "slides/voice-to-text.html#correct-data-for-a-single-file",
+    "href": "slides/voice-to-text.html#correct-data-for-a-single-file",
+    "title": "Speech to Text",
+    "section": "Correct data for a single file",
+    "text": "Correct data for a single file\n\n# Read the transcriptions from the markdown file\nmarkdown_path = Path('YOUR/PATH/DATA.md')\nwith markdown_path.open('r') as md_file:\n    transcriptions = md_file.read()\n\n# Post-process the transcriptions using GPT-4\ncorrected_text = generate_corrected_transcript(0.2, system_prompt, transcriptions)\n\n# save the corrected text to a new markdown file\noutput_path = Path('YOUR/PATH/corrected_data.md')\nwith output_path.open('w') as out_file:\n    out_file.write(corrected_text)\n\n\n\nJan Kirenz"
+  }
+]
