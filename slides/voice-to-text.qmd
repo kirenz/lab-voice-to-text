@@ -1,0 +1,419 @@
+---
+title: Speech to Text
+title-slide-attributes:
+  data-background-image: ../images/logo.png
+  data-background-size: contain
+  data-background-opacity: "0.5"
+lang: en
+subtitle: Learn how to turn audio into text
+author: Jan Kirenz
+execute:
+  eval: false
+  echo: true
+highlight-style: github
+format:
+  revealjs: 
+    toc: true
+    toc-depth: 1
+    embed-resources: false
+    theme: [dark, ../custom.scss]  
+    incremental: true
+    transition: slide
+    background-transition: fade
+    transition-speed: slow
+    code-copy: true
+    code-line-numbers: true
+    smaller: false
+    scrollable: true
+    slide-number: c
+    preview-links: auto
+    chalkboard: 
+      buttons: false
+   # logo: ../images/logo.png
+    footer: Jan Kirenz
+---
+
+# Introduction
+
+Transcribe audio into whatever language the audio is in.
+
+# Setup
+
+```{python}
+import openai
+from pathlib import Path
+import difflib
+
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv())
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+```
+
+# Simple example
+
+## Create mp3 data {.smaller}
+
+- Use [ttsmp3](https://ttsmp3.com/) to generate your audio data
+- save it as `example.mp3` in your Downloads folder
+
+- Example text to use in [ttsmp3](https://ttsmp3.com/) :
+
+```{markdown}
+Welcome to the world of automatic speech recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze.
+
+```
+
+
+## SSML {.smaller}
+
+- You may use [Speech Synthesis Markup Language (SSML)](https://docs.aws.amazon.com/polly/latest/dg/supportedtags.html) to customize the output
+
+- Add a **break**: Mary had a little lamb <break time="1s"/> Whose fleece was white as snow.
+- **Emphasizing** words: I already told you I <emphasis level="strong">really like </emphasis> that person.
+- **Speed**: For dramatic purposes, you might wish to <prosody rate="slow">slow down the speaking rate of your text.</prosody>
+Or if you are in a hurry <prosody rate="fast">your may want to speed it up a bit.</prosody>
+- **Pitch**: Do you like sythesized speech <prosody pitch="high">with a pitch that is higher than normal?</prosody> Or do you prefer your speech <prosody pitch="-20%">with a somewhat lower pitch?</prosody>
+- **Whisper** <amazon:effect name="whispered">If you make any noise, </amazon:effect> she said, <amazon:effect name="whispered">they will hear us.</amazon:effect>
+- **Conversations**: It is possible to switch between speakers within the text. Just use the following format:
+  - [speaker:Brian] Hello Emma
+  - [speaker:Emma] Hey Brian
+  - [speaker:Brian] How are you doing?
+  - [speaker:Emma] I am fine. May i invite you to a cup of tea?
+
+
+## Load data
+
+```{python}
+path_to_example = Path.home() / 'Downloads/example.mp3' 
+```
+
+. . .
+
+```{python}
+audio_file= open(path_to_example, "rb")
+```
+
+- 'r': Read mode. File is opened for reading. 
+- 'b': Binary mode. File is opened in binary mode, which is used for non-text files (e.g., image and sound files).
+
+## Transcribe
+
+File uploads are currently limited to 25 MB and the following input file types are supported: mp3, mp4, mpeg, mpga, m4a, wav, and webm.
+
+```{python}
+transcript = openai.Audio.transcribe("whisper-1", audio_file)
+transcript
+```
+
+. . .
+
+```{bash}
+<OpenAIObject at 0x117dea450> JSON: {
+  "text": "Welcome to the world of Automatic Speech Recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze."
+}
+
+```
+
+
+# Extract only text
+
+```{python}
+text_output = transcript['text']
+text_output
+```
+
+- Output:
+
+. . .
+
+```{markdown}
+"Welcome to the world of Automatic Speech Recognition with OpenAI's Whisper API. Whisper is an automatic speech recognition system trained on a massive amount of multilingual and multitask supervised data collected from the web. It is designed to convert spoken language into written text, making transcription tasks a breeze."
+
+```
+
+# Save text
+
+```{python}
+write_to_output = Path.home() / 'Downloads/output.txt' 
+```
+
+. . .
+
+```{python}
+with open(write_to_output, 'w') as file:
+    file.write(text_output)
+```
+
+
+# Workflow for multiple files
+
+- We will use an example with multiple .mp3 files which are stored in the 'Downloads' folder
+
+- Note that the files will be renamed during the process
+
+## Prepare environment
+
+- Create a new folder called `data` in your Downloads folder
+- Place at least two mp3 files in your `data` folder
+
+## Obtain file names
+
+```{python}
+
+downloads_folder = Path.home() / 'Downloads/data'
+
+mp3_files = [f for f in downloads_folder.iterdir() if f.suffix == '.mp3']
+
+```
+
+## Obtain time of storage 
+
+```{python}
+# Get file paths along with their stored time
+file_details = [(f, f.stat().st_mtime) for f in mp3_files]
+```
+
+## Sort files according to time
+
+
+```{python}
+sorted_files = sorted(file_details, key=lambda x: x[1])
+```
+
+## Move and rename files
+
+- Move the files to a folder of your choice (we use our data folder) and rename the files to 01_audio, 02_audio, etc.
+
+. . .
+
+```{python}
+
+destination_folder = Path.home() / 'Downloads/data'
+
+for idx, (file_path, _) in enumerate(sorted_files):
+    dest_path = destination_folder / f"{str(idx+1).zfill(2)}_audio.mp3"
+    file_path.rename(dest_path)
+
+
+```
+
+
+## Transcripe helper function
+
+
+```{python}
+def transcribe_audio(audio_file_path):
+    """
+    Transcribe the given audio file using OpenAI's Whisper ASR system.
+    """
+    audio_file_path = Path(audio_file_path)  # Convert to Path object if it's not already
+    with audio_file_path.open("rb") as audio_file:
+        response = openai.Audio.transcribe("whisper-1", audio_file)
+    return response["text"]
+
+```
+
+
+## Apply function
+
+```{python}
+
+data_folder = destination_folder
+
+# Get a list of all audio files in the /data/ folder
+audio_files = sorted(data_folder.glob('*.mp3'))
+
+for audio_file in audio_files:
+    # Transcribe the audio file
+    transcription = transcribe_audio(audio_file)
+
+    # Create a new txt file name based on the audio file's name
+    txt_file_name = audio_file.stem + ".txt"
+    txt_file_path = data_folder / txt_file_name
+
+    # Save the transcription to the txt file
+    with txt_file_path.open('w') as txt_file:
+        txt_file.write(transcription)
+
+```
+
+
+## Save as markdown
+
+
+```{python}
+
+markdown_content = []
+
+# Iterate through all txt files in the /data/ folder
+txt_files = sorted(data_folder.glob('*.txt'))
+
+for txt_file in txt_files:
+    # Read the content of the txt file
+    with txt_file.open('r') as file:
+        file_content = file.read()
+    
+    # Append the file name as a headline and then the content to the markdown content list
+    markdown_content.append(f"# {txt_file.name}\n\n{file_content}\n")
+
+# Join all the markdown content pieces to create the final document
+final_markdown = "\n".join(markdown_content)
+
+# Save the combined content to a markdown file
+output_file = data_folder / "combined_audio_transcriptions.md"
+with output_file.open('w') as file:
+    file.write(final_markdown)
+```
+
+# Post processing with GPT
+
+## System prompt
+
+```{python}
+system_prompt = "You are a helpful assistant. Your task is to correct any spelling discrepancies in the transcribed text. Only add necessary punctuation such as periods, commas, and capitalization, and use only the context provided"
+```
+
+## Helper function
+
+```{python}
+def generate_corrected_transcript(temperature, system_prompt, transcribed_text):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        temperature=temperature,
+        messages=[
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": transcribed_text
+            }
+        ]
+    )
+    return response['choices'][0]['message']['content']
+```
+
+
+
+
+## Correct data for multiple files
+
+- In the appendix is an example of how to correct a single file
+
+```{python}
+# Directory containing the transcription files
+data_folder = destination_folder
+
+# List to hold the corrected transcriptions
+corrected_transcriptions = []
+
+# Iterate through each individual .txt file
+for txt_file_path in sorted(data_folder.glob('??_audio.txt')):
+    # Read the transcription from the file
+    with txt_file_path.open('r') as txt_file:
+        transcription = txt_file.read()
+
+    # Post-process the transcription using GPT-4
+    corrected_text = generate_corrected_transcript(0.5, system_prompt, transcription)
+    
+    # Append the file name as a headline and then the corrected content to the list
+    corrected_transcriptions.append(f"# {txt_file_path.name}\n\n{corrected_text}\n")
+
+# Combine the corrected transcriptions and save them to the new markdown file
+output_file = data_folder / "corrected_text.md"
+with output_file.open('w') as out_file:
+    out_file.write("\n".join(corrected_transcriptions))
+
+```
+
+
+## Show differences
+
+```{python}
+
+
+# Define file paths
+original_file_path = Path.home() / 'Downloads/data/combined_audio_transcriptions.md' 
+
+corrected_file_path = Path.home() / 'Downloads/data/corrected_text.md'
+
+# Read the content of both markdown files
+with original_file_path.open('r') as f:
+    original_content = f.readlines()
+
+with corrected_file_path.open('r') as f:
+    corrected_content = f.readlines()
+
+# Generate a side-by-side comparison in HTML format
+differ = difflib.HtmlDiff()
+comparison_html = differ.make_file(original_content, corrected_content)
+
+# Add custom CSS for content wrapping and better visualization
+custom_css = """
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    table.diff {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    td {
+        vertical-align: top;
+        padding: 5px;
+        border: 1px solid #ddd;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+</style>
+"""
+
+# The rest of your code remains the same...
+
+
+# Insert the custom CSS into the generated HTML content
+comparison_html = comparison_html.replace('<head>', '<head>' + custom_css)
+
+
+# Save the HTML comparison to a file
+output_html_path = Path.home() / 'Downloads/data/comparison.html'
+with output_html_path.open('w') as f:
+    f.write(comparison_html)
+
+```
+
+
+
+
+# What's next? {background-image="../images/logo.png" background-opacity="0.5"}
+
+**Congratulations! You have completed this tutorial** 👍
+
+**Next, you may want to go back to the [lab's website](https://kirenz.github.io/lab-voice-to-text/)**
+
+
+# Appendix
+
+## Correct data for a single file
+
+
+```{python}
+# Read the transcriptions from the markdown file
+markdown_path = Path('YOUR/PATH/DATA.md')
+with markdown_path.open('r') as md_file:
+    transcriptions = md_file.read()
+
+# Post-process the transcriptions using GPT-4
+corrected_text = generate_corrected_transcript(0.2, system_prompt, transcriptions)
+
+# save the corrected text to a new markdown file
+output_path = Path('YOUR/PATH/corrected_data.md')
+with output_path.open('w') as out_file:
+    out_file.write(corrected_text)
+
+```
+
