@@ -3,8 +3,6 @@ title: "Slides"
 number-sections: true
 ---
 
-*The following tutorials are mainly based on [""]() provided by*
-
 
 ::: {.callout-note appearance="simple"}
 Take a look at the [slides tutorial](https://kirenz.github.io/lab-toolkit/slides/slides.html#/title-slide) to learn how to use all slide options. 
@@ -16,7 +14,7 @@ You have several options to start code development:
 
 2. **Local**: Click on one of the links "💻 Jupyter Notebook" below, go to the Colab menu and choose "File" > "Download" > "Download .ipynb"
 
-3. **Cloud Codespace**: Work in a fully configured dev environment in the cloud with a [GitHub Codespace VS Code Browser](/https://github.com/kirenz/lab-XYZ/blob/main/README.md) environment.
+3. **Cloud Codespace**: Work in a fully configured dev environment in the cloud with a [GitHub Codespace VS Code Browser](/https://github.com/kirenz/lab-voice-to-text/blob/main/README.md) environment.
 
 4. **Local VS Code with Codespace**: Use [GitHub Codespaces in your local Visual Studio Code environment](https://docs.github.com/en/codespaces/developing-in-codespaces/using-github-codespaces-in-visual-studio-code).
 
@@ -26,11 +24,11 @@ For cost reasons we mainly use OpenAI's `gpt-3.5-turbo` model in our tutorials. 
 
 
 
-## Txt
+## Voice to Text
 
-In this tutorial, you'll learn:
+Learn how to use Whisper to convert audio data into text data:
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation]()
-- [💻 Jupyter Notebook]()
+- [🖥️ Presentation](slides/voice-to-text.qmd.qmd)
+- [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-voice-to-text/blob/main/code/voice-to-text.ipynb)
 :::
