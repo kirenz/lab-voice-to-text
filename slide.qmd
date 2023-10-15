@@ -29,6 +29,6 @@ For cost reasons we mainly use OpenAI's `gpt-3.5-turbo` model in our tutorials. 
 Learn how to use Whisper to convert audio data into text data:
 
 ::: {.callout-tip appearance="simple" icon=false}
-- [🖥️ Presentation](slides/voice-to-text.qmd.qmd)
+- [🖥️ Presentation](slides/voice-to-text.qmd)
 - [💻 Jupyter Notebook](https://colab.research.google.com/github/kirenz/lab-voice-to-text/blob/main/code/voice-to-text.ipynb)
 :::
