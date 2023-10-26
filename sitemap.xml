@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://github.com/kirenz/lab-voice-to-text/index.html</loc>
-    <lastmod>2023-10-15T15:49:23.501Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/kirenz/lab-voice-to-text/code/voice-to-text.html</loc>
-    <lastmod>2023-10-15T15:49:22.764Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/kirenz/lab-voice-to-text/slides/voice-to-text.html</loc>
-    <lastmod>2023-10-15T15:49:21.076Z</lastmod>
-  </url>
-  <url>
     <loc>https://github.com/kirenz/lab-voice-to-text/assignments.html</loc>
-    <lastmod>2023-10-15T15:49:19.476Z</lastmod>
+    <lastmod>2023-10-26T07:17:47.561Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-voice-to-text/data/combined_audio_transcriptions.html</loc>
-    <lastmod>2023-10-15T15:49:18.228Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/kirenz/lab-voice-to-text/data/corrected_text.html</loc>
-    <lastmod>2023-10-15T15:49:19.124Z</lastmod>
+    <lastmod>2023-10-26T07:17:46.809Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-voice-to-text/slide.html</loc>
-    <lastmod>2023-10-15T15:49:20.056Z</lastmod>
+    <lastmod>2023-10-26T07:17:45.761Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/kirenz/lab-voice-to-text/require.html</loc>
-    <lastmod>2023-10-15T15:49:21.864Z</lastmod>
+    <loc>https://github.com/kirenz/lab-voice-to-text/slides/voice-to-text.html</loc>
+    <lastmod>2023-10-26T07:17:44.481Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/kirenz/lab-voice-to-text/code/notebook.html</loc>
-    <lastmod>2023-10-15T15:49:23.125Z</lastmod>
+    <lastmod>2023-10-26T07:17:39.829Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/kirenz/lab-voice-to-text/code/voice-to-text.html</loc>
+    <lastmod>2023-10-26T07:17:41.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/kirenz/lab-voice-to-text/index.html</loc>
+    <lastmod>2023-10-26T07:17:45.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/kirenz/lab-voice-to-text/data/corrected_text.html</loc>
+    <lastmod>2023-10-26T07:17:46.297Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/kirenz/lab-voice-to-text/require.html</loc>
+    <lastmod>2023-10-26T07:17:47.185Z</lastmod>
   </url>
 </urlset>
